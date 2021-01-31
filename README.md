@@ -6,10 +6,9 @@ All library we post in same id! <br>
 
 ### Changelog 
 | Version | Changelog 
-| st | bt |          
-|--- |:--:|:---------:
-| 01 | 38 |Initial Build
-| 02 | 45 |Bug fixed,Added Del.dog Library
+|---|:---------:
+| 0138 |Initial Build
+| 0245 |Bug fixed,Added Del.dog Library
 
 
 ### Website
