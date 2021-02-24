@@ -16,7 +16,13 @@ var ph = class ph {
       payload : data
     }
     try{
-      return UrlFetchApp.fetch(this.urlApi+method,option)
+      let res =  UrlFetchApp.fetch(this.urlApi+method,option)
+      let reS = JSON.parse(res)
+      if(reS.ok){
+        return reS.result
+      }else{
+        return res
+      }
     }catch(error){
       return error
     }
