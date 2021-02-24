@@ -10,6 +10,7 @@ All library we post in same id! <br>
 | 0138 |Initial Build
 | 0245 |Bug fixed,Added Del.dog Library
 | 0368 |Added Detect Inline Keyboard On Text
+| 04135 | Added telegaram bot api Library
 
 ### Website
 [https://butthx.glitch.me](https://butthx.glitch.me)
