@@ -12,6 +12,11 @@ All library we post in same id! <br>
 | 0368 |Added Detect Inline Keyboard On Text
 | 04135 | Added telegaram bot api Library
 | 05136 | Fixed replyMd Mdv2 HTML
+| 06137 | +replyDice()
+|       |+build.button.url()
+|       |+build.button.callback()
+|       |+getFileLink()
+|       |+Bug fixed
 
 ### Website
 [https://butthx.glitch.me](https://butthx.glitch.me)
