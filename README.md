@@ -17,7 +17,35 @@ All library we post in same id! <br>
 |       |+build.button.callback()
 |       |+getFileLink()
 |       |+Bug fixed
+| 07139 | _shortcut_
+|       |+ replyAnimation
+|       |+ replyVoice
+|       |+ replyVideoNote
+|       |+ replyMediaGroup
+|       |+ replyLocation
+|       |+ replyVenue
+|       |+ replyContact
+|       |+ replyChatAction
+|       |+ replySticker
+|       |+ getPathFileLink
+|       |+ build.random
+|       |+ build.loop
+|       |_event_
+|       |+ Animation
+|       |+ Dice
+|       |+ video_note
+|       |+ pinned_message
+| 08144 |+ setPrefix
+|       |+ bot.cmd
+|       |+ bug fixed
+
 
 ### Website
 [https://butthx.glitch.me](https://butthx.glitch.me)
+### Group Discussion
+[Telegram](https://t.me/butthxdiscuss)
+  
+  
+Thanks for use this library!
+Found bugs? please join to my groups discussion to get help
 
