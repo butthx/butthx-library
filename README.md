@@ -38,7 +38,7 @@ All library we post in same id! <br>
 | 08144 |+ setPrefix
 |       |+ bot.cmd
 |       |+ bug fixed
-| 13163 |+ bot.build.file
+| 12163 |+ bot.build.file
 |       |+ bot.build.zip
 |       |+ bot.build.unzip
 |       |+ bot.remsg
