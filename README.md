@@ -38,12 +38,24 @@ All library we post in same id! <br>
 | 08144 |+ setPrefix
 |       |+ bot.cmd
 |       |+ bug fixed
+| 12163 |+ bot.build.file
+|       |+ bot.build.zip
+|       |+ bot.build.unzip
+|       |+ bot.remsg
+|       |+ bot.sleep
+|       |  rebuild bot.cmd and bot.command
 
 
 ### Website
 [https://butthx.glitch.me](https://butthx.glitch.me)
 ### Group Discussion
 [Telegram](https://t.me/butthxdiscuss)
+### Contribute this library
+I am very happy if you want to contribute to this library.
+This library free and open source
+
+### LICENCE
+MIT LICENCE
   
   
 Thanks for use this library!
