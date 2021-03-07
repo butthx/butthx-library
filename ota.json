@@ -1,5 +1,5 @@
 {
- "stable": 11,
+ "stable": 12,
  "beta": 164,
- "changelog":" "
+ "changelog":"+ bot.sleep\n+bot.build.file\n+bot.build.unzip\nbot.build.zip\n+bot.remsg\n+rebuild bot.command and bot.cmd"
 }
