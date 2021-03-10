@@ -1,5 +1,5 @@
 {
- "stable": 13,
- "beta": 163,
- "changelog":"\n+bot.sleep\n+bot.build.file\n+bot.build.unzip\n+bot.build.zip\n+bot.remsg\n+rebuild bot.command and bot.cmd"
+ "stable": 14,
+ "beta": 179,
+ "changelog":"\n• Added option paste to nekobin\n• Added option to ignore command\n• Added event text\n• Added bot.cb\n• Added bug fixed\n• Added bot.reuser\n• Support Bot Api 5.1\n• Added event voice_chat_started\n• Added event voice_chat_ended\n• Added event voice_chat_participants_invited\n• Added event notify_voice_chat\n• Added event timer_message\n• Added event chat_member\n• Added event my_chat_member\n• Added event forward_message\n• Added event via_bot\n• Added event media_group\n• Added event game\n• Added event new_chat_title\n• Added event new_chat_photo\n• Added event delete_chat_photo\n• Added event group_chat_created\n• Added event supergroup_chat_created\n• Added event channel_chat_created\n• Added event migrate_chat\n• Added bot.createChatInviteLink\n• Added bot.editChatInviteLink\n• Added bot.revokeChatInviteLink"
 }
