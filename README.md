@@ -3,7 +3,15 @@ All library we post in same id! <br>
 **Stable** _(recommended)_ : ```1OnTWLtbd0GD3qGd2pSZUxWD1j_G4Rki75baKIgFdTN5WB78qLnjZj7qj```
 <br>
 **Beta** : ```1QnAO4mNqFd4Kn_MOtvIqCmGC1BvTvxv0MDmB1BvSBzAMmevVejvuk2HW```
-
+### Website
+[https://butthx.glitch.me](https://butthx.glitch.me)
+### Group Discussion
+[Telegram](https://t.me/butthxdiscuss)
+### Contribute this library
+I am very happy if you want to contribute to this library.
+This library free and open source  
+### LICENCE
+MIT LICENCE  
 ### Changelog 
 | Version | Changelog 
 |---|:---------:
@@ -44,20 +52,37 @@ All library we post in same id! <br>
 |       |+ bot.remsg
 |       |+ bot.sleep
 |       |  rebuild bot.cmd and bot.command
+| 14179 |• Added option paste to nekobin
+|       |• Added option to ignore command
+|       |• Added event text
+|       |• Added bot.cb
+|       |• Added bug fixed
+|       |• Added bot.reuser
+|       |• Support Bot Api 5.1
+|       |• Added event voice_chat_started
+|       |• Added event voice_chat_ended
+|       |• Added event voice_chat_participants_invited
+|       |• Added event notify_voice_chat
+|       |• Added event timer_message
+|       |• Added event chat_member
+|       |• Added event my_chat_member
+|       |• Added event forward_message
+|       |• Added event via_bot
+|       |• Added event media_group
+|       |• Added event game
+|       |• Added event new_chat_title
+|       |• Added event new_chat_photo
+|       |• Added event delete_chat_photo
+|       |• Added event group_chat_created
+|       |• Added event supergroup_chat_created
+|       |• Added event channel_chat_created
+|       |• Added event migrate_chat
+|       |• Added bot.createChatInviteLink
+|       |• Added bot.editChatInviteLink
+|       |• Added bot.revokeChatInviteLink
 
 
-### Website
-[https://butthx.glitch.me](https://butthx.glitch.me)
-### Group Discussion
-[Telegram](https://t.me/butthxdiscuss)
-### Contribute this library
-I am very happy if you want to contribute to this library.
-This library free and open source
 
-### LICENCE
-MIT LICENCE
-  
-  
 Thanks for use this library!
 Found bugs? please join to my groups discussion to get help
 
