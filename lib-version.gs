@@ -1,9 +1,9 @@
 var lib = {
-  version : '163 : ',
+  version : '14 : Bot API 5.1',
   ota : function(){
   try{
-   let type = 'beta'
-   let version = 163
+   let type = 'stable'
+   let version = 14
    let res = JSON.parse(UrlFetchApp.fetch('https://raw.githubusercontent.com/butthx/butthx-library/master/ota.json').getContentText())
     if(res[type] <= version){
       return `BUTTHX OTA\nNo updates available. You are using the latest version.`
@@ -20,3 +20,4 @@ var lib = {
 ph.prototype.lib = lib
 dg.prototype.lib = lib
 bot.prototype.lib = lib
+mt.prototype.lib = lib
