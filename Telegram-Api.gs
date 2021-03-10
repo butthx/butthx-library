@@ -19,7 +19,7 @@ buildJSON(json){
              result[moreObj[0]] = moreObj[1]
            }else{
              result[moreObj[0]] = JSON.stringify(moreObj[1])
-          }
+           }
       }
      }
    }else{
@@ -60,6 +60,16 @@ handleUpdate(e){
  }
 }
 //custom
+cb(data,next){
+  try{
+    if(this.update.callback_query && (this.update.callback_query.data == data)){
+      return next(this.update)
+    }
+    return;
+  }catch(error){
+    return error
+  }
+}
 sleep(time){
  try{
   let t = String(time)
@@ -101,6 +111,7 @@ sleep(time){
   }
  return;
  }catch(error){
+   return error
  }
 }
 setPrefix(array){
@@ -110,14 +121,16 @@ try{
  return error
 }
 }
-command(array,next){
+command(array,next,ignore){
  try{
-   if(Array.isArray(array)){
+  let more = "(?:\@(?<username>[^\s+]+))?"
+  if(ignore){ more = "(?:\@(?<username>[^\s+]+))?$"}
+  if(Array.isArray(array)){
     let txt = this.update.message.text;
-    let regex = new RegExp("^["+this.prefix.toString()+"]("+array.join('|')+")(?:\@(?<username>[^\s+]+))?","i")
+    let regex = new RegExp("^["+this.prefix.toString()+"]("+array.join('|')+")"+more,"i")
     if(regex.exec(txt)){
      let sm = regex.exec(txt)
-      if(sm.groups.username){
+     if(sm.groups.username){
        if(sm.groups.username == this.botInfo.username){
         return next(this.update)
        }else{
@@ -129,10 +142,10 @@ command(array,next){
      }
    }else{
      let txt = this.update.message.text;
-     let regex = new RegExp("^["+this.prefix.toString()+"]"+array+"(?:\@(?<username>[^\s+]+))?","i")
+     let regex = new RegExp("^["+this.prefix.toString()+"]"+array+more,"i")
      if(regex.exec(txt)){
       let sm = regex.exec(txt)
-       if(sm.groups.username){
+      if(sm.groups.username){
         if(sm.groups.username == this.botInfo.username){
           return next(this.update)
         }else{
@@ -147,14 +160,16 @@ command(array,next){
    return error
 }
 }
-cmd(array,next){
+cmd(array,next,ignore){
 try{
+  let more = "(?:\@(?<username>[^\s+]+))?"
+  if(ignore){more = "(?:\@(?<username>[^\s+]+))?$"};
    if(Array.isArray(array)){
     let txt = this.update.message.text;
-    let regex = new RegExp("^["+this.prefix.toString()+"]("+array.join('|')+")(?:\@(?<username>[^\s+]+))?","i")
+    let regex = new RegExp("^["+this.prefix.toString()+"]("+array.join('|')+")"+more,"i")
     if(regex.exec(txt)){
-     let sm = regex.exec(txt)
-      if(sm.groups.username){
+    let sm = regex.exec(txt)
+    if(sm.groups.username){
        if(sm.groups.username == this.botInfo.username){
         return next(this.update)
        }else{
@@ -166,10 +181,10 @@ try{
      }
    }else{
      let txt = this.update.message.text;
-     let regex = new RegExp("^["+this.prefix.toString()+"]"+array+"(?:\@(?<username>[^\s+]+))?","i")
+     let regex = new RegExp("^["+this.prefix.toString()+"]"+array+more,"i")
      if(regex.exec(txt)){
       let sm = regex.exec(txt)
-       if(sm.groups.username){
+      if(sm.groups.username){
         if(sm.groups.username == this.botInfo.username){
           return next(this.update)
         }else{
@@ -409,6 +424,9 @@ return this.sendMessage(this.update.message.chat.id,text,this.buildJSON({reply_t
 remsg(text,advanced){
   return this.replyToMessage(text,advanced)
 }
+reuser(text,advanced){
+  return this.replyToUser(text,advanced)
+}
 getFileLink(path){
 if(!path){ return 'path required'}
 return `https://api.telegram.org/file/bot${this.BOT_TOKEN}/${path}`
@@ -420,7 +438,7 @@ return this.getFileLink(path)
 }
 on(text,next){
  try {
-  if(text == 'message' && this.update.message){
+    if(text == 'message' && this.update.message){
      return next(this.update)
     };
     if((text == 'new_chat_members' || text == 'new_chat_member' || text == 'new_chat_participant')&& this.update.message.new_chat_members){
@@ -489,9 +507,66 @@ on(text,next){
     if(text == 'pinned_message' && this.update.message.pinned_message){
      return next(this.update)
     };
+    if(text == 'text' && this.update.message.text){
+     return next(this.update)
+    };
+    if(text == 'voice_chat_started' && this.update.message.voice_chat_started){
+     return next(this.update)
+    };
+    if(text == 'voice_chat_ended' && this.update.message.voice_chat_ended){
+     return next(this.update)
+    };
+    if(text == 'voice_chat_participants_invited' && this.update.message.voice_chat_participants_invited){
+     return next(this.update)
+    };
+    if(text == 'notify_voice_chat' && (this.update.message.voice_chat_participants_invited||this.update.message.voice_chat_ended||this.update.message.voice_chat_started)){
+     return next(this.update)
+    };
+    if((text == 'timer_message'|| text == 'message_auto_delete_timer_changed') && this.update.message.message_auto_delete_timer_changed){
+     return next(this.update)
+    };
+    if(text == 'chat_member' && this.update.chat_member){
+     return next(this.update)
+    };
+    if(text == 'my_chat_member' && this.update.my_chat_member){
+     return next(this.update)
+    };
+    if(text == 'forward_message' && (this.update.message.forward_from||this.update.message.forward_from_chat||this.update.message.forward_from_message_id||this.update.message.forward_signature||this.update.message.forward_sender_name||this.update.message.forward_date)){
+     return next(this.update)
+    };
+    if(text == 'via_bot' && this.update.message.via_bot){
+     return next(this.update)
+    };
+    if(text == 'media_group' && this.update.message.media_group_id){
+     return next(this.update)
+    };
+    if(text == 'game' && this.update.message.game){
+     return next(this.update)
+    };
+    if(text == 'new_chat_title' && this.update.message.new_chat_title){
+     return next(this.update)
+    };
+    if(text == 'new_chat_photo' && this.update.message.new_chat_photo){
+     return next(this.update)
+    };
+    if(text == 'delete_chat_photo' && this.update.message.delete_chat_photo){
+     return next(this.update)
+    };
+    if(text == 'group_chat_created' && this.update.message.group_chat_created){
+     return next(this.update)
+    };
+    if(text == 'supergroup_chat_created' && this.update.message.supergroup_chat_created){
+     return next(this.update)
+    };
+    if(text == 'channel_chat_created' && this.update.message.channel_chat_created){
+     return next(this.update)
+    };
+    if(text == 'migrate_chat' && (this.update.message.migrate_to_chat_id||this.update.message.migrate_from_chat_id)){
+     return next(this.update)
+    };
  return;
 } catch (error) {
-  return error
+ return error
 }
 }
 //telegram api
@@ -1053,5 +1128,31 @@ let data = {
       data.advanced = advanced
  }
  return this.request('answerInlineQuery',data)
+}
+createChatInviteLink(chat_id,advanced){
+  let data = {
+   chat_id: String(chat_id)
+ }
+ if(advanced){
+      data.advanced = advanced
+ }
+ return this.request('createChatInviteLink',data)
+}
+editChatInviteLink(chat_id,invite_link,advanced){
+  let data = {
+   chat_id: String(chat_id),
+   invite_link : invite_link
+ }
+ if(advanced){
+      data.advanced = advanced
+ }
+ return this.request('editChatInviteLink',data)
+}
+revokeChatInviteLink(chat_id,invite_link){
+  let data = {
+   chat_id: String(chat_id),
+   invite_link : invite_link
+ }
+ return this.request('revokeChatInviteLink',data)
 }
 }
