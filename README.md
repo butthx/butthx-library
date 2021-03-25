@@ -9,7 +9,7 @@ All library we post in same id! <br>
 [Telegram](https://t.me/butthxdiscuss)
 ### Contribute this library
 I am very happy if you want to contribute to this library.
-This library free and open source  
+This library free and open source. But don't do plagiarism!  
 ### LICENCE
 MIT LICENCE  
 ### Changelog 
