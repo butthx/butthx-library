@@ -10,8 +10,8 @@ All library we post in same id! <br>
 ### Contribute this library
 I am very happy if you want to contribute to this library.
 This library free and open source. But don't do plagiarism!  
-### LICENCE
-MIT LICENCE  
+### LICENSE
+![MIT LICENSE](https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=flat-square)
 ### Changelog 
 | Version | Changelog 
 |---|:---------:
