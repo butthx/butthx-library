@@ -6,7 +6,7 @@ All library we post in same id! <br>
 ### Docs
 [https://libsdocs.now.sh](https://libsdocs.now.sh)
 ### Group Discussion
-[Telegram](https://t.me/butthxdiscuss)
+[![butthxdiscuss](https://img.shields.io/badge/Telegram-Discussion-blue.svg?style=flat-square&logo=telegram)](https://t.me/butthxdiscuss)
 ### Contribute this library
 I am very happy if you want to contribute to this library.
 This library free and open source. But don't do plagiarism!  
