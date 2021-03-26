@@ -6,7 +6,7 @@ All library we post in same id! <br>
   
 [![https://libsdocs.now.sh](https://img.shields.io/badge/libsdocs.now.sh-blue.svg?style=flat-square&logo=vercel)](https://libsdocs.now.sh)
 [![butthxdiscuss](https://img.shields.io/badge/Telegram-Discussion-blue.svg?style=flat-square&logo=telegram)](https://t.me/butthxdiscuss)
-![MIT LICENSE](https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=flat-square)
+[![MIT LICENSE](https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=flat-square)](https://github.com/butthx/butthx-library/blob/master/LICENSE)
 [![github](https://img.shields.io/badge/Github-Butthx-green.svg?style=flat-square&logo=github)](https://github.com/butthx/butthx-library)
 [![OTA](https://img.shields.io/badge/OTA%20UPDATE-red.svg?style=flat-square)](https://github.com/butthx/butthx-library/blob/master/ota.json)
 ### Contribute this library
