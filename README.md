@@ -8,7 +8,7 @@ All library we post in same id! <br>
 [![butthxdiscuss](https://img.shields.io/badge/Telegram-Discussion-blue.svg?style=flat-square&logo=telegram)](https://t.me/butthxdiscuss)
 ![MIT LICENSE](https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=flat-square)
 [![github](https://img.shields.io/badge/Github-Butthx-green.svg?style=flat-square&logo=github)](https://github.com/butthx/butthx-library)
-[![OTA](https://img.shields.io/badge/OTA-red.svg?style=flat-square)](https://github.com/butthx/butthx-library/blob/master/ota.json)
+[![OTA](https://img.shields.io/badge/OTA%20UPDATE-red.svg?style=flat-square)](https://github.com/butthx/butthx-library/blob/master/ota.json)
 ### Contribute this library
 I am very happy if you want to contribute to this library.
 This library free and open source. But don't do plagiarism!  
