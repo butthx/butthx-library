@@ -4,7 +4,7 @@ All library we post in same id! <br>
 <br>
 **Beta** : ```1QnAO4mNqFd4Kn_MOtvIqCmGC1BvTvxv0MDmB1BvSBzAMmevVejvuk2HW```
 ### Docs
-[https://libsdocs.now.sh](https://libsdocs.now.sh)
+[![https://libsdocs.now.sh](https://img.shields.io/badge/libsdocs.now.sh-blue.svg?style=flat-square&logo=vercel)](https://libsdocs.now.sh)
 ### Group Discussion
 [![butthxdiscuss](https://img.shields.io/badge/Telegram-Discussion-blue.svg?style=flat-square&logo=telegram)](https://t.me/butthxdiscuss)
 ### Contribute this library
