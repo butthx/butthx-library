@@ -3,7 +3,8 @@ constructor(token){
  this.BOT_TOKEN = token
  this.update = {}
  this.botInfo = {}
- this.prefix = ["!",".","/"]
+ this.hideToken = false
+ this.getCleanCache = true
 }
 buildJSON(json){
  let result = {}
@@ -35,7 +36,11 @@ let option = {
   method : 'POST'
 }
   if(data){option.payload = this.buildJSON(data)}
-  let res = UrlFetchApp.fetch('https://api.telegram.org/bot'+this.BOT_TOKEN+'/'+method,option)
+  let token = this.BOT_TOKEN 
+  if(this.hideToken){
+    token = PropertiesService.getUserProperties().getProperty("BOT_TOKEN")
+  }
+  let res = UrlFetchApp.fetch('https://api.telegram.org/bot'+token+'/'+method,option)
   let Res = JSON.parse(res)
   if(Res.ok){
    return Res.result
@@ -52,20 +57,64 @@ handleUpdate(e){
       let update = JSON.parse(e.postData.contents);
       if (update){
        this.update = update
-       this.botInfo = this.getMe()
+       let info = PropertiesService.getUserProperties().getProperty("botInfo")
+       if(info){
+        this.botInfo = JSON.parse(info)
+       }else{
+         let data = this.getMe()
+         PropertiesService.getUserProperties().setProperty("botInfo",JSON.stringify(data))
+         this.botInfo = JSON.parse(PropertiesService.getUserProperties().getProperty("botInfo"))
+       }
+       if(this.hideToken){
+        let d = PropertiesService.getUserProperties().getProperty("BOT_TOKEN")
+        if(!d){
+        PropertiesService.getUserProperties().setProperty("BOT_TOKEN",this.BOT_TOKEN)
+        }
+        this.BOT_TOKEN = null
+       }
+       return true
     }
   }
+  return false
  }catch(error){
    return error
  }
 }
 //custom
+clearCache(){
+ try{
+  if(this.getCleanCache){
+   PropertiesService.getUserProperties().deleteAllProperties()
+   return true
+  }
+  return false
+ }catch(error){
+   return error
+ }
+}
+getCache(){
+try{
+ if(this.getCleanCache){
+   return PropertiesService.getUserProperties().getProperties()
+  }
+  return false
+ }catch(error){
+   return error
+ }
+}
 cb(data,next){
   try{
-    if(this.update.callback_query && (this.update.callback_query.data == data)){
-      return next(this.update)
+     let cbdata = this.update.callback_query.data
+     if(data instanceof RegExp){
+      if(data.exec(cbdata)){
+        return next(this.update,data.exec(cbdata))
+      }
+    }else{
+      let regex = new RegExp(data,"i")
+      if(regex.exec(cbdata)){
+        return next(this.update)
+      }
     }
-    return;
   }catch(error){
     return error
   }
@@ -114,108 +163,82 @@ sleep(time){
    return error
  }
 }
-setPrefix(array){
-try{
- return this.prefix = array
-}catch(error){
- return error
-}
-}
+/**
+ * @param {String|Array} array
+ * @param {function} next
+ * @param {Boolean} ignore
+ */
 command(array,next,ignore){
- try{
-  let more = "(?:\@(?<username>[^\s+]+))?"
-  if(ignore){ more = "(?:\@(?<username>[^\s+]+))?$"}
-  if(Array.isArray(array)){
-    let txt = this.update.message.text;
-    let regex = new RegExp("^["+this.prefix.toString()+"]("+array.join('|')+")"+more,"i")
-    if(regex.exec(txt)){
-     let sm = regex.exec(txt)
-     if(sm.groups.username){
-       if(sm.groups.username == this.botInfo.username){
-        return next(this.update)
-       }else{
-        return
+   try{
+    let more = "(?:\@(?<username>[^\s+]+))?"
+    if(ignore) more = "(?:\@(?<username>[^\s+]+))?$"
+    if(Array.isArray(array)){
+       if(this.update.message.entities[0].type == "bot_command"){
+         let regex = new RegExp("^[\/]("+array.join('|')+")"+more,"i")
+         let rgx = new RegExp("^[\/]("+array.join('|')+")(?:\@(?<username>[^\s+]+))?$","i")
+         let txt = this.update.message.text.substr(this.update.message.entities[0].offset,this.update.message.entities[0].length)
+         if(regex.exec(this.update.message.text)){
+           if(rgx.exec(txt)){
+           let sm = rgx.exec(txt)
+           if(sm.groups.username){
+            if(sm.groups.username == this.botInfo.username){
+               return next(this.update)
+               }else{
+                return
+              }
+             }else{
+              return next(this.update)
+            }
+           }
+         }
        }
-      }else{
-        return next(this.update)
-      }
-     }
-   }else{
-     let txt = this.update.message.text;
-     let regex = new RegExp("^["+this.prefix.toString()+"]"+array+more,"i")
-     if(regex.exec(txt)){
-      let sm = regex.exec(txt)
-      if(sm.groups.username){
-        if(sm.groups.username == this.botInfo.username){
-          return next(this.update)
-        }else{
-          return
-        }
-       }else{
-       return next(this.update)
-     }
-   }
+       return;
+     }else{
+       if(this.update.message.entities[0].type == "bot_command"){
+         let regex = new RegExp("^[\/]"+array+more,"i")
+         let rgx = new RegExp("^[\/]"+array+"(?:\@(?<username>[^\s+]+))?$","i")
+         let txt = this.update.message.text.substr(this.update.message.entities[0].offset,this.update.message.entities[0].length)
+         if(regex.exec(this.update.message.text)){
+           if(rgx.exec(txt)){
+           let sm = rgx.exec(txt)
+           if(sm.groups.username){
+            if(sm.groups.username == this.botInfo.username){
+               return next(this.update)
+               }else{
+                return
+              }
+             }else{
+              return next(this.update)
+            }
+           }
+         }
+       }
+       return;
+    }
+   } catch (error){
+     return error
   }
- } catch (error){
-   return error
-}
 }
 cmd(array,next,ignore){
 try{
-  let more = "(?:\@(?<username>[^\s+]+))?"
-  if(ignore){more = "(?:\@(?<username>[^\s+]+))?$"};
-   if(Array.isArray(array)){
-    let txt = this.update.message.text;
-    let regex = new RegExp("^["+this.prefix.toString()+"]("+array.join('|')+")"+more,"i")
-    if(regex.exec(txt)){
-    let sm = regex.exec(txt)
-    if(sm.groups.username){
-       if(sm.groups.username == this.botInfo.username){
-        return next(this.update)
-       }else{
-        return
-       }
-      }else{
-        return next(this.update)
-      }
-     }
-   }else{
-     let txt = this.update.message.text;
-     let regex = new RegExp("^["+this.prefix.toString()+"]"+array+more,"i")
-     if(regex.exec(txt)){
-      let sm = regex.exec(txt)
-      if(sm.groups.username){
-        if(sm.groups.username == this.botInfo.username){
-          return next(this.update)
-        }else{
-          return
-        }
-       }else{
-       return next(this.update)
-     }
-   }
-  }
- } catch (error){
-   return error
-}
-}
-regex(regex,next){
- try{
-   let txt = this.update.message.text;
-   if(regex.exec(txt)){
-    return next(this.update,regex.exec(txt))
-   }
+   return this.command(array,next,ignore)
  } catch (error){
    return error
 }
 }
 listen(text,next){
-try{
-   let txt = this.update.message.text;
-   let regex = new RegExp(text,"i")
-   if(regex.exec(txt)){
-    return next(this.update)
-   }
+ try{
+  let txt = this.update.message.text
+  if(text instanceof RegExp){
+    if(text.exec(txt)){
+      return next(this.update,text.exec(txt))
+    }
+  }else{
+    let regex = new RegExp(text,"i")
+    if(regex.exec(txt)){
+      return next(this.update,regex.exec(txt))
+    }
+  }
  } catch (error){
    return error
 }
@@ -427,14 +450,11 @@ remsg(text,advanced){
 reuser(text,advanced){
   return this.replyToUser(text,advanced)
 }
-getFileLink(path){
-if(!path){ return 'path required'}
-return `https://api.telegram.org/file/bot${this.BOT_TOKEN}/${path}`
-}
-getPathFileLink(file_id){
-if(!file_id){return 'file_id required!'}
+getFileLink(file_id){
+if(!file_id)return 'file_id required!'
+if(this.hideToken) return "This bot token has been hidden. I can't see it!"
 let path = this.getFile(file_id).file_path
-return this.getFileLink(path)
+return `https://api.telegram.org/file/bot${this.BOT_TOKEN}/${path}`
 }
 on(text,next){
  try {
@@ -569,7 +589,126 @@ on(text,next){
  return error
 }
 }
+inlineQuery(text,next){
+try{
+  let query = this.update.inline_query.query
+   if(text instanceof RegExp){
+    if(text.exec(query)){
+      return next(this.update,text.exec(query))
+    }
+   }else{
+     let regex = new RegExp(text,"i")
+     if(regex.exec(query)){
+      return next(this.update)
+    }
+ }
+}catch(error){
+ return error
+}
+}
+pinMsg(message_id,advanced){
+ if(this.update.callback_query){
+   if(!message_id){
+   return this.pinChatMessage(this.update.callback_query.message.chat.id,this.update.callback_query.message.message_id,advanced)
+   }
+   return this.pinChatMessage(this.update.callback_query.message.chat.id,message_id,advanced)
+ }
+ if(this.update.edited_message){
+  if(!message_id){
+   return this.pinChatMessage(this.update.edited_message.chat.id,this.update.edited_message.message_id,advanced)
+   }
+  return this.pinChatMessage(this.update.edited_message.chat.id,message_id,advanced)
+ }
+ if(!message_id){
+   return this.pinChatMessage(this.update.message.chat.id,this.update.message.message_id,advanced)
+   }
+ return this.pinChatMessage(this.update.message.chat.id,message_id,advanced)
+}
+delMsg(message_id){
+ if(this.update.callback_query){
+   if(!message_id){
+   return this.deleteMessage(this.update.callback_query.message.chat.id,this.update.callback_query.message.message_id)
+   }
+   return this.deleteMessage(this.update.callback_query.message.chat.id,message_id)
+ }
+ if(this.update.edited_message){
+  if(!message_id){
+   return this.deleteMessage(this.update.edited_message.chat.id,this.update.edited_message.message_id)
+   }
+  return this.deleteMessage(this.update.edited_message.chat.id,message_id)
+ }
+ if(!message_id){
+   return this.deleteMessage(this.update.message.chat.id,this.update.message.message_id)
+ }
+ return this.deleteMessage(this.update.message.chat.id,message_id)
+}
+ping(){
+try{
+  if(this.update.edited_message){
+ let start = this.update.edited_message.edit_date
+ let end = Date.now()
+ let time = end /1000 - start
+ let c  = time.toFixed(3)
+ return `${c} ms`
+ }
+ if(this.update.callback_query){
+   let start = this.update.callback_query.message.date
+   let end = Date.now()
+   let time = end /1000 - start
+   let c  = time.toFixed(3)
+   return `${c} ms`
+ }
+ let start = this.update.message.date || this.update.edited_message.edit_date || this.update.callback_query.message.date
+ let end = Date.now()
+ let time = end /1000 - start
+ let c  = time.toFixed(3)
+ return `${c} ms`
+}catch(error){
+  return error
+ }
+}
+replyInline(result,advanced){
+ return this.answerInlineQuery(this.update.inline_query.id,result,advanced)
+}
+editText(message_id,text,advanced){
+ if(this.update.callback_query){
+   return this.editMessageText(this.update.callback_query.message.chat.id,this.update.callback_query.message.message_id,message_id,text)
+ }
+ return this.editMessageText(this.update.message.chat.id,message_id,text,advanced)
+}
+editMedia(message_id,media,advanced){
+ if(this.update.callback_query){
+   return this.editMessageMedia(this.update.callback_query.message.chat.id,this.update.callback_query.message.message_id,message_id,media)
+ }
+ return this.editMessageMedia(this.update.message.chat.id,message_id,media,advanced)
+}
+editCaption(message_id,caption,advanced){
+ if(this.update.callback_query){
+   return this.editMessageCaption(this.update.callback_query.message.chat.id,this.update.callback_query.message.message_id,message_id,caption)
+ }
+ return this.editMessageCaption(this.update.message.chat.id,message_id,caption,advanced)
+}
+editMarkup(message_id,markup,advanced){
+ if(this.update.callback_query){
+   return this.editMessageReplyMarkup(this.update.callback_query.message.chat.id,this.update.callback_query.message.message_id,message_id,markup)
+ }
+ return this.editMessageReplyMarkup(this.update.message.chat.id,message_id,markup,advanced)
+}
+getMember(user_id){
+ if(this.update.callback_query){
+   return this.getChatMember(this.update.callback_query.message.chat.id,user_id)
+ }
+ if(this.update.edited_message){
+   return this.getChatMember(this.update.edited_message.chat.id,user_id)
+ }
+ return this.getChatMember(this.update.message.chat.id,user_id)
+}
 //telegram api
+/*
+* @param {Number} offset
+* @param {Number} limit
+* @param {JSON} advanced
+*/
 getUpdates(offset,limit,advanced){
  let data = {
    offset: offset,
